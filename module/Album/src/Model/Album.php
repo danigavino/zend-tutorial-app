@@ -1,29 +1,37 @@
 <?php
+
 namespace Album\Model;
 
 use DomainException;
-use Zend\Filter\StringTrim;
-use Zend\Filter\StripTags;
-use Zend\Filter\ToInt;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
-use Zend\Validator\StringLength;
 
-class Album
+class Album implements InputFilterAwareInterface
 {
     public $id;
     public $artist;
     public $title;
-
+	
     private $inputFilter;
 
     public function exchangeArray(array $data)
     {
-        $this->id     = !empty($data['id']) ? $data['id'] : null;
-        $this->artist = !empty($data['artist']) ? $data['artist'] : null;
-        $this->title  = !empty($data['title']) ? $data['title'] : null;
+        $this->id     = (!empty($data['id'])) ? $data['id'] : null;
+        $this->artist = (!empty($data['artist'])) ? $data['artist'] : null;
+        $this->title  = (!empty($data['title'])) ? $data['title'] : null;
     }
+	
+	 public function getArrayCopy()
+    {
+        return [
+            'id'     => $this->id,
+            'artist' => $this->artist,
+            'title'  => $this->title,
+        ];
+    }
+	
+	/* Add the following methods: */
 
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
@@ -45,7 +53,7 @@ class Album
             'name' => 'id',
             'required' => true,
             'filters' => [
-                ['name' => ToInt::class],
+                ['name' => 'int'],
             ],
         ]);
 
@@ -53,12 +61,12 @@ class Album
             'name' => 'artist',
             'required' => true,
             'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
+                ['name' => 'StripTags'],
+                ['name' => 'StringTrim'],
             ],
             'validators' => [
                 [
-                    'name' => StringLength::class,
+                    'name' => 'StringLength',
                     'options' => [
                         'encoding' => 'UTF-8',
                         'min' => 1,
@@ -72,12 +80,12 @@ class Album
             'name' => 'title',
             'required' => true,
             'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
+                ['name' => 'StripTags'],
+                ['name' => 'StringTrim'],
             ],
             'validators' => [
                 [
-                    'name' => StringLength::class,
+                    'name' => 'StringLength',
                     'options' => [
                         'encoding' => 'UTF-8',
                         'min' => 1,
@@ -90,4 +98,5 @@ class Album
         $this->inputFilter = $inputFilter;
         return $this->inputFilter;
     }
+
 }

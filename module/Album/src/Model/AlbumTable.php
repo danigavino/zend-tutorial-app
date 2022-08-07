@@ -1,5 +1,4 @@
 <?php
-
 namespace Album\Model;
 
 use RuntimeException;

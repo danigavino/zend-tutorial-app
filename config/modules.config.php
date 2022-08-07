@@ -12,10 +12,15 @@
  */
 return [
     'Zend\Form',
+    'Zend\Db',
+    'Zend\Router',
+    'Zend\Validator',
+    'Zend\Db',
+    'Zend\Form',
+    'Zend\Hydrator',
     'Zend\InputFilter',
     'Zend\Filter',
-    'Zend\Hydrator',
-    'Zend\Db',
+    'Zend\Cache',
     'Zend\Router',
     'Zend\Validator',
     'Application',
